@@ -126,7 +126,7 @@ void keyPressEvent(GLubyte key, GLint x, GLint y) {
 
 	if (key == '+') {
 		zoom += 0.1; // Aumenta a escala
-		if (zoom > 4) zoom = 10; // valor maximo de escala		
+		if (zoom > 4) zoom = 4; // valor maximo de escala		
 	}
 	else if (key == '-') zoom -= 0.1; // Diminui a escala
 	if (zoom < 0.1) zoom = 0.1; // valor minimo de escala
@@ -221,17 +221,17 @@ void display() {
 
 int main(int argc, char * argv[]) {
 	printf("Qual o tipo de projecao desejada? (Digite 0 para paralela e 1 para perspectiva)\n");
-	scanf("%d", &op);
+	scanf("%d%*c", &op);
 
 	printf("\nINFORMACOES\n");
-	printf("===========\n\n");
+	printf("===========\n");
 	printf("\tO eixo vermelho e o eixo x\n");
 	printf("\tO eixo amarelo e o eixo y\n");
 	printf("\tO eixo azul e o eixo z\n");
 
-	printf("COMANDOS");
+	printf("COMANDOS\n");
 	printf("========\n");
-	printf("\tESCOLHA DE OBJETO");
+	printf("\tESCOLHA DE OBJETO\n");
 	printf("\t\t(1) --> Escolhe a esfera\n");
 	printf("\t\t(2) --> Escolhe o cubo\n");
 	printf("\t\t(3) --> Escolhe o bule\n");

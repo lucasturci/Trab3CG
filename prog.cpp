@@ -1,4 +1,4 @@
-#include <GLUT/glut.h>
+#include <GL/glut.h>
 #include <cstdlib>
 #include <cstdio>
 #include <math.h>
@@ -26,7 +26,38 @@ void init() {
 	glutInitWindowSize(700, 700);
 	glutCreateWindow("Teapot");
 
-	glClearColor(1, 1, 1, 0);
+	glClearColor (0.0, 0.0, 0.0, 0.0); //fundo preto
+	glShadeModel (GL_FLAT); // modelo flat
+	// glShadeModel (GL_SMOOTH); // modelo de gouraud
+
+	GLfloat luz_ambiente[4] = {0.2, 0.2, 0.2, 1.0}; 
+	GLfloat luz_difusa[4] = {0.7, 0.7, 0.7, 1.0}; // cor 
+	GLfloat luz_especular[4] = {1.0, 1.0, 1.0, 1.0}; // brilho 
+	GLfloat posicao_luz[4] = {0.0, 50.0, 50.0, 1.0};
+
+	GLfloat especularidade[4] = {1.0, 1.0, 1.0, 1.0}; // Capacidade de brilho do material
+	GLint espec_material = 60;
+
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, especularidade);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, espec_material);
+
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luz_ambiente);
+
+	// Define os parâmetros da luz de número 0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, luz_ambiente); 
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, luz_difusa);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, luz_especular);
+	glLightfv(GL_LIGHT0, GL_POSITION, posicao_luz);
+
+	// Habilita a cor do material pela cor atual
+	glEnable(GL_COLOR_MATERIAL);
+	// Habilita iluminação
+	glEnable(GL_LIGHTING);  
+	// Habilita a luz 0
+	glEnable(GL_LIGHT0);
+	// Habilita o depth-buffering
+	glEnable(GL_DEPTH_TEST);
 }
 
 void setProjection(int mask) {
@@ -136,9 +167,19 @@ void displayViewPort(int x, int y, int w, int h, int mask) {
 
 	
 	glColor3f(0,1,0);
-	if (obj == 1) glutWireSphere(10, 50, 20); //Desenha um tetraedro de arame na cor verde
-	else if (obj == 2) glutWireCube(10.0); // Desenha um cubo de arame na cor verde
-	else if (obj == 3) glutWireTeapot(10.0); // Desenha um bule de arame na cor verde
+	if (obj == 1) {
+		glutSolidSphere(10, 50, 20); //Desenha um tetraedro solido na cor verde
+
+		glShadeModel (GL_SMOOTH); // modelo de gouraud foi considerado mais adequado a esfera
+	}
+	else if (obj == 2) {
+		glutSolidCube(10.0); // Desenha um cubo de arame na cor verde
+		glShadeModel (GL_FLAT); // modelo flat foi considerado mais adequado ao cubo
+	}
+	else if (obj == 3) {
+		glutSolidTeapot(10.0); // Desenha um bule de arame na cor verde
+		glShadeModel (GL_SMOOTH); // modelo de gouraud foi considerado mais adequado ao teapot
+	}
 }
 
 void drawLines() {
@@ -168,6 +209,7 @@ void display() {
 
 	glClear(GL_COLOR_BUFFER_BIT);
 
+
 	displayViewPort(0, 350, 350, 350, 0);
 	displayViewPort(350, 350, 350, 350, 1); // Espelha no eixo x
 	displayViewPort(0, 0, 350, 350, 2); // Espelha no eixo y
@@ -178,6 +220,9 @@ void display() {
 }
 
 int main(int argc, char * argv[]) {
+	printf("Qual o tipo de projecao desejada? (Digite 0 para paralela e 1 para perspectiva)\n");
+	scanf("%d", &op);
+
 	printf("\nINFORMACOES\n");
 	printf("===========\n\n");
 	printf("\tO eixo vermelho e o eixo x\n");
@@ -186,7 +231,7 @@ int main(int argc, char * argv[]) {
 
 	printf("COMANDOS");
 	printf("========\n");
-	printf("\ESCOLHA DE OBJETO");
+	printf("\tESCOLHA DE OBJETO");
 	printf("\t\t(1) --> Escolhe a esfera\n");
 	printf("\t\t(2) --> Escolhe o cubo\n");
 	printf("\t\t(3) --> Escolhe o bule\n");

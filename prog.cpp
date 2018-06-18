@@ -24,7 +24,7 @@ void display();
 void init() {
 	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowSize(700, 700);
-	glutCreateWindow("Teapot");
+	glutCreateWindow("Visualizacao de objetos 3D");
 
 	glClearColor (0.0, 0.0, 0.0, 0.0); //fundo preto
 	glShadeModel (GL_FLAT); // modelo flat
@@ -38,9 +38,9 @@ void init() {
 	GLfloat especularidade[4] = {1.0, 1.0, 1.0, 1.0}; // Capacidade de brilho do material
 	GLint espec_material = 60;
 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, especularidade);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, especularidade);
 	// Define a concentração do brilho
-	glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, espec_material);
+	glMateriali(GL_FRONT, GL_SHININESS, espec_material);
 
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luz_ambiente);
 
